@@ -1,3 +1,5 @@
+import { client, sender } from "../lib/mailtrap.js";
+
 export const VERIFICATION_EMAIL_TEMPLATE = `
 <!DOCTYPE html>
 <html lang="en">
@@ -93,3 +95,20 @@ export const PASSWORD_RESET_REQUEST_TEMPLATE = `
 </body>
 </html>
 `;
+
+export const sendWelcomeEmail = async (email, name) => {
+    const recipient = [{ email }];
+    try {
+        const response = await client.send({
+            from: sender,
+            to: recipient,
+            template_uuid: "a1988f6e-f542-438e-b3fa-d56e8fcfcdb2",
+            template_variables: {
+                name: name,
+            },
+        });
+        console.log("Welcome email sent sucessfully", response);
+    } catch (error) {
+        throw new Error("Error sending welcome email", error.message);
+    }
+};
