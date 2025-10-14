@@ -52,7 +52,8 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-    res.send("Logout route");
+    res.clearCookie("jwt");
+    res.status(204).json({ success: true, message: "Logged out successfully" });
 };
 
 export const verifyemail = async (req, res) => {
