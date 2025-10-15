@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    checkAuth,
     forgotPassword,
     login,
     logout,
@@ -7,8 +8,11 @@ import {
     signup,
     verifyemail,
 } from "../controllers/auth.controller.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
+
+router.get("/check-auth", verifyToken, checkAuth);
 
 router.post("/signup", signup);
 

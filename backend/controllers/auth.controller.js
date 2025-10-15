@@ -9,6 +9,7 @@ import {
 } from "../utils/email.js";
 import { generateToken } from "../utils/accessToken.js";
 import { generateVerificationCode } from "../utils/verification.js";
+import { log } from "console";
 
 export const signup = async (req, res) => {
     const { email, password, name } = req.body;
@@ -189,6 +190,21 @@ export const resetPassword = async (req, res) => {
         });
     } catch (error) {
         console.log("Error reseting password", error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+};
+
+export const checkAuth = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select("-password");
+        if (!user) {
+            return res
+                .status(404)
+                .json({ success: false, message: "User not found" });
+        }
+        res.status(200).json({ success: true, user });
+    } catch (error) {
+        console.log("Error in checking auth", error);
         res.status(400).json({ success: false, message: error.message });
     }
 };
